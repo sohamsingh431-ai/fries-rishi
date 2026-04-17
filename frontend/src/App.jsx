@@ -35,7 +35,10 @@ import {
   Smartphone,
   ScanSearch,
   Lock,
-  History
+  History,
+  Building2,
+  TrendingDown,
+  Briefcase
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -47,7 +50,7 @@ const API_BASE_URL = 'http://localhost:8000';
 const INITIAL_MESSAGES = [];
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState('investigation'); // 'investigation' or 'email'
+  const [activeTab, setActiveTab] = useState('investigation'); // 'investigation', 'email', 'salary', 'company'
   const [conversations, setConversations] = useState([
     { id: Date.now(), title: 'Chat 1', messages: [...INITIAL_MESSAGES], formData: { job_url: '', company_claimed: '', recruiter_email: '', salary_offered: '', offer_text: '' } }
   ]);
@@ -242,17 +245,17 @@ const App = () => {
               <Menu size={24} />
             </button>
             <nav className="hidden lg:flex items-center gap-12 h-full">
-              <button 
-                onClick={() => setActiveTab('investigation')}
-                className={`text-sm font-black uppercase tracking-widest h-[72px] flex items-center pt-0.5 border-b-2 transition-all ${activeTab === 'investigation' ? 'text-[#111827] border-[#2563eb]' : 'text-[#6b7280] border-transparent hover:text-[#111827]'}`}
-              >
+              <button onClick={() => setActiveTab('investigation')} className={`text-sm font-black uppercase tracking-widest h-[72px] flex items-center pt-0.5 border-b-2 transition-all ${activeTab === 'investigation' ? 'text-[#111827] border-[#2563eb]' : 'text-[#6b7280] border-transparent hover:text-[#111827]'}`}>
                 Job Url
               </button>
-              <button 
-                onClick={() => setActiveTab('email')}
-                className={`text-sm font-black uppercase tracking-widest h-[72px] flex items-center pt-0.5 border-b-2 transition-all ${activeTab === 'email' ? 'text-[#111827] border-[#2563eb]' : 'text-[#6b7280] border-transparent hover:text-[#111827]'}`}
-              >
+              <button onClick={() => setActiveTab('email')} className={`text-sm font-black uppercase tracking-widest h-[72px] flex items-center pt-0.5 border-b-2 transition-all ${activeTab === 'email' ? 'text-[#111827] border-[#2563eb]' : 'text-[#6b7280] border-transparent hover:text-[#111827]'}`}>
                 E-mail Audit
+              </button>
+              <button onClick={() => setActiveTab('salary')} className={`text-sm font-black uppercase tracking-widest h-[72px] flex items-center pt-0.5 border-b-2 transition-all ${activeTab === 'salary' ? 'text-[#111827] border-[#2563eb]' : 'text-[#6b7280] border-transparent hover:text-[#111827]'}`}>
+                Salary
+              </button>
+              <button onClick={() => setActiveTab('company')} className={`text-sm font-black uppercase tracking-widest h-[72px] flex items-center pt-0.5 border-b-2 transition-all ${activeTab === 'company' ? 'text-[#111827] border-[#2563eb]' : 'text-[#6b7280] border-transparent hover:text-[#111827]'}`}>
+                Company Name
               </button>
             </nav>
           </div>
@@ -264,13 +267,8 @@ const App = () => {
               <div className="max-w-[900px] mx-auto space-y-12 pb-20">
                 {messages.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
-                    <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center">
-                      <ScanSearch size={32} />
-                    </div>
-                    <div className="space-y-2">
-                      <h2 className="text-xl font-bold text-[#111827]">New Investigation</h2>
-                      <p className="text-[#6b7280] max-w-sm text-sm">Upload a document or provide a job URL to begin your forensic analysis.</p>
-                    </div>
+                    <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center"><ScanSearch size={32} /></div>
+                    <div className="space-y-2"><h2 className="text-xl font-bold text-[#111827]">New Investigation</h2><p className="text-[#6b7280] max-w-sm text-sm">Upload a document or provide a job URL to begin your forensic analysis.</p></div>
                   </div>
                 )}
                 {messages.map((msg, idx) => (
@@ -286,107 +284,77 @@ const App = () => {
                       ) : msg.type === 'pdf' ? (
                         <div className="bg-white border-2 border-[#e5e7eb] rounded-2xl overflow-hidden p-4 flex items-center gap-4 max-w-sm shadow-sm">
                            <div className="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-500"><FileText size={24} /></div>
-                           <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-[#111827] truncate">{msg.content}</p>
-                              <p className="text-[11px] font-bold text-[#9ca3af] uppercase tracking-widest">{msg.fileSize} • PDF DOCUMENT</p>
-                           </div>
+                           <div className="flex-1 min-w-0"><p className="text-sm font-bold text-[#111827] truncate">{msg.content}</p><p className="text-[11px] font-bold text-[#9ca3af] uppercase tracking-widest">{msg.fileSize} • PDF DOCUMENT</p></div>
                         </div>
                       ) : (
                         <div className="bg-white border-2 border-[#e5e7eb] rounded-[32px] overflow-hidden shadow-2xl shadow-blue-500/5 text-left">
                            <div className="p-6 lg:p-10 space-y-8">
                              <div className="flex items-center justify-between flex-wrap gap-4">
-                                <div className="space-y-1">
-                                   <h3 className="text-xs font-black text-[#9ca3af] uppercase tracking-widest">Forensic Verdict</h3>
-                                   <h2 className={`text-4xl font-display font-black tracking-tighter ${getVerdictStyles(msg.data.verdict).color}`}>{msg.data.verdict}</h2>
-                                </div>
+                                <div className="space-y-1"><h3 className="text-xs font-black text-[#9ca3af] uppercase tracking-widest">Forensic Verdict</h3><h2 className={`text-4xl font-display font-black tracking-tighter ${getVerdictStyles(msg.data.verdict).color}`}>{msg.data.verdict}</h2></div>
                                 <div className="relative w-16 h-16 lg:w-20 lg:h-20 flex items-center justify-center">
                                    <div className="absolute inset-0 border-4 border-[#f3f4f6] rounded-full"></div>
                                    <div className={`absolute inset-0 border-4 ${getVerdictStyles(msg.data.verdict).color.replace('text', 'border')} rounded-full`} style={{ clipPath: `polygon(50% 50%, 50% 0%, ${msg.data.score}% 0%, ${msg.data.score}% 100%, 0% 100%, 0% 0%)` }}></div>
                                    <span className={`text-xl lg:text-2xl font-black ${getVerdictStyles(msg.data.verdict).color}`}>{msg.data.score}</span>
                                 </div>
                              </div>
-                             <div className={`p-6 lg:p-8 rounded-[24px] border-l-8 ${getVerdictStyles(msg.data.verdict).bg} ${getVerdictStyles(msg.data.verdict).color.replace('text', 'border')}`}>
-                                <p className="text-lg font-bold text-[#111827] mb-2">Technical Summary</p>
-                                <p className="text-[15px] lg:text-[16px] leading-relaxed text-[#4b5563] font-medium">{msg.data.verdict === 'SCAM' ? "High-confidence fraud signal identified." : "Investigation complete. Low risk profile detected."}</p>
-                             </div>
                              <div className="space-y-5">
-                               <div className="flex items-center gap-2 px-1"><Activity size={14} className="text-[#2563eb]" /><h3 className="text-[11px] font-black text-[#9ca3af] uppercase tracking-[0.2em]">Signal Breakdown</h3></div>
-                               <div className="grid gap-4">
-                                  {msg.data.signals.map((sig, sidx) => (
-                                    <div key={sidx} className={`flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl border-2 transition-all hover:translate-x-1 shadow-sm gap-3 ${sig.flag ? 'bg-rose-50/30 border-rose-100' : 'bg-[#fbfcff] border-emerald-50'}`}>
-                                       <div className="flex items-center gap-4">
-                                          <div className={`p-2 rounded-lg ${sig.flag ? 'bg-rose-100 text-rose-500' : 'bg-emerald-100 text-emerald-500'}`}>{sig.flag ? <XCircle size={18} /> : <CheckCircle2 size={18} />}</div>
-                                          <span className={`text-[14px] font-bold ${sig.flag ? 'text-rose-900' : 'text-[#374151]'}`}>{sig.reason}</span>
-                                       </div>
-                                       {sig.penalty > 0 && <span className="self-start sm:self-center text-[10px] bg-white text-rose-600 px-3 py-1 rounded-full border border-rose-100 font-black shadow-sm">-{sig.penalty} PTS</span>}
-                                    </div>
-                                  ))}
-                               </div>
+                               {msg.data.signals.map((sig, sidx) => (
+                                 <div key={sidx} className={`flex flex-col sm:flex-row sm:items-center justify-between p-5 rounded-2xl border-2 transition-all hover:translate-x-1 shadow-sm gap-3 ${sig.flag ? 'bg-rose-50/30 border-rose-100' : 'bg-[#fbfcff] border-emerald-50'}`}>
+                                    <div className="flex items-center gap-4"><div className={`p-2 rounded-lg ${sig.flag ? 'bg-rose-100 text-rose-500' : 'bg-emerald-100 text-emerald-500'}`}>{sig.flag ? <XCircle size={18} /> : <CheckCircle2 size={18} />}</div><span className={`text-[14px] font-bold ${sig.flag ? 'text-rose-900' : 'text-[#374151]'}`}>{sig.reason}</span></div>
+                                 </div>
+                               ))}
                              </div>
-                           </div>
-                           <div className="bg-[#111827] px-8 lg:px-10 py-5 flex items-center justify-between flex-col sm:flex-row gap-4">
-                              <div className="flex items-center gap-3"><Fingerprint size={20} className="text-blue-400" /><span className="text-[11px] font-black text-white/60 uppercase tracking-[0.2em] truncate">Hash: {Math.random().toString(16).slice(2, 10).toUpperCase()}</span></div>
-                              <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest">{new Date().toLocaleString()}</span>
                            </div>
                         </div>
                       )}
                     </div>
                   </motion.div>
                 ))}
-                {(isExtracting || isAnalyzing) && (
-                  <div className="flex gap-6 animate-pulse">
-                    <div className="w-[40px] h-[40px] bg-[#2563eb]/20 rounded-xl flex items-center justify-center"><Loader2 size={24} className="text-[#2563eb] animate-spin" /></div>
-                    <div className="bg-white border border-[#e5e7eb] rounded-[24px] rounded-tl-none px-8 py-5 shadow-sm">
-                      <p className="text-[15px] font-bold text-[#6b7280]">Alexandria is cross-referencing markers...</p>
-                    </div>
-                  </div>
-                )}
+                {(isExtracting || isAnalyzing) && (<div className="flex gap-6 animate-pulse"><div className="w-[40px] h-[40px] bg-[#2563eb]/20 rounded-xl flex items-center justify-center"><Loader2 size={24} className="text-[#2563eb] animate-spin" /></div><div className="bg-white border border-[#e5e7eb] rounded-[24px] px-8 py-5 shadow-sm font-bold text-gray-500">Alexandria is analyzing...</div></div>)}
                 <div ref={messagesEndRef} />
               </div>
+            </div>
+          ) : activeTab === 'email' ? (
+            <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto space-y-10">
+               <div className="bg-white border-2 border-[#e5e7eb] rounded-[32px] p-8 lg:p-12 space-y-10 shadow-sm">
+                  <div className="flex items-center gap-5"><div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center"><Mail size={32} /></div><div className="space-y-1"><h2 className="text-2xl font-black text-[#111827] tracking-tight">E-mail Header Audit</h2><p className="text-sm font-medium text-[#6b7280]">Detect spoofing and identify mail origin.</p></div></div>
+                  <div className="space-y-4">
+                     <label className="text-xs font-black text-[#9ca3af] uppercase tracking-widest pl-1">Paste Raw Headers</label>
+                     <textarea placeholder="Paste full email headers..." className="w-full h-80 bg-[#f9fafb] border-2 border-[#e5e7eb] rounded-3xl p-6 text-sm font-mono focus:border-[#2563eb] outline-none transition-all resize-none"></textarea>
+                     <button className="w-full h-16 bg-[#111827] text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-black transition-all"><ScanSearch size={22} /> Audit Header Signals</button>
+                  </div>
+               </div>
+            </div>
+          ) : activeTab === 'salary' ? (
+            <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto space-y-10">
+               <div className="bg-white border-2 border-[#e5e7eb] rounded-[32px] p-8 lg:p-12 space-y-10 shadow-sm">
+                  <div className="flex items-center gap-5"><div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center"><DollarSign size={32} /></div><div className="space-y-1"><h2 className="text-2xl font-black text-[#111827] tracking-tight">Salary Calibration</h2><p className="text-sm font-medium text-[#6b7280]">Verify if the offered compensation is realistic.</p></div></div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                         <label className="text-xs font-black text-[#9ca3af] uppercase tracking-widest pl-1">Salary Offered</label>
+                         <input type="text" placeholder="e.g. $12,000 / month" className="w-full h-14 bg-[#f9fafb] border-2 border-[#e5e7eb] rounded-2xl px-5 font-bold outline-none focus:border-[#2563eb]" />
+                      </div>
+                      <div className="space-y-4">
+                         <label className="text-xs font-black text-[#9ca3af] uppercase tracking-widest pl-1">Job Role</label>
+                         <input type="text" placeholder="e.g. Data Entry" className="w-full h-14 bg-[#f9fafb] border-2 border-[#e5e7eb] rounded-2xl px-5 font-bold outline-none focus:border-[#2563eb]" />
+                      </div>
+                  </div>
+                  <button className="w-full h-16 bg-[#2563eb] text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20"><TrendingDown size={22} /> Check Anomaly Coefficient</button>
+               </div>
             </div>
           ) : (
             <div className="px-4 lg:px-10 py-10 max-w-4xl mx-auto space-y-10">
                <div className="bg-white border-2 border-[#e5e7eb] rounded-[32px] p-8 lg:p-12 space-y-10 shadow-sm">
-                  <div className="flex items-center gap-5">
-                     <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center">
-                        <Mail size={32} />
-                     </div>
-                     <div className="space-y-1">
-                        <h2 className="text-2xl font-black text-[#111827] tracking-tight">Advanced E-mail Audit</h2>
-                        <p className="text-sm font-medium text-[#6b7280]">Identify sender origin and detect header spoofing.</p>
-                     </div>
-                  </div>
-
+                  <div className="flex items-center gap-5"><div className="w-14 h-14 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center"><Building2 size={32} /></div><div className="space-y-1"><h2 className="text-2xl font-black text-[#111827] tracking-tight">Company Verification</h2><p className="text-sm font-medium text-[#6b7280]">Verify legal existence and corporate reputation.</p></div></div>
                   <div className="space-y-6">
-                     <div className="space-y-4">
-                        <label className="text-xs font-black text-[#9ca3af] uppercase tracking-widest pl-1">Paste Raw E-mail Headers</label>
-                        <textarea 
-                          placeholder="Paste the full email source/headers here..."
-                          className="w-full h-80 bg-[#f9fafb] border-2 border-[#e5e7eb] rounded-3xl p-6 text-sm font-mono placeholder:text-[#9ca3af] focus:border-[#2563eb] outline-none transition-all resize-none"
-                        ></textarea>
-                     </div>
-
-                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <button className="h-16 bg-[#111827] text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-black transition-all">
-                           <ScanSearch size={22} />
-                           Surface Origin IP
-                        </button>
-                        <button className="h-16 bg-white border-2 border-[#e5e7eb] text-[#111827] rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-gray-50 transition-all">
-                           <Lock size={22} />
-                           Check DKIM/SPF
-                        </button>
-                     </div>
-                  </div>
-
-                  <div className="p-8 bg-blue-50/50 rounded-2xl border border-blue-100 flex gap-5">
-                      <div className="text-blue-500 shrink-0"><AlertCircle size={24} /></div>
-                      <div className="space-y-2">
-                         <p className="text-sm font-bold text-blue-900">How to get headers?</p>
-                         <p className="text-xs font-medium text-blue-700 leading-relaxed">
-                            In Gmail, click the three dots ⋮ on an email and select "Show original". 
-                            Copy everything from the top down to the first blank line.
-                         </p>
+                      <div className="space-y-4">
+                         <label className="text-xs font-black text-[#9ca3af] uppercase tracking-widest pl-1">Legal Entity Name</label>
+                         <div className="relative">
+                            <Building2 className="absolute left-5 top-1/2 -translate-y-1/2 text-[#9ca3af]" size={20} />
+                            <input type="text" placeholder="Search official registry..." className="w-full h-16 bg-[#f9fafb] border-2 border-[#e5e7eb] rounded-2xl pl-14 pr-5 font-bold outline-none focus:border-[#2563eb]" />
+                         </div>
                       </div>
+                      <button className="w-full h-16 bg-[#111827] text-white rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-black transition-all"><Search size={22} /> Cross-check Registries</button>
                   </div>
                </div>
             </div>
@@ -395,18 +363,12 @@ const App = () => {
 
         {activeTab === 'investigation' && (
           <footer className="px-4 lg:px-10 py-6 lg:py-10 bg-[#f9fafb] border-t border-[#e5e7eb] sticky bottom-0">
-            <div className="max-w-[900px] mx-auto relative">
-                <div className="relative group bg-white border-2 border-[#e5e7eb] rounded-[24px] lg:rounded-[32px] focus-within:border-[#2563eb] transition-all flex items-center pr-3 pl-4 lg:pl-8 py-2">
-                  <button onClick={() => fileInputRef.current?.click()} className="p-3 text-[#9ca3af] hover:text-[#2563eb] transition-colors rounded-xl hover:bg-[#eff6ff] shrink-0">
-                    <Paperclip size={24} />
-                  </button>
-                  <input type="text" value={userInput} onChange={(e) => setUserInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Inquire further..." className="flex-1 bg-transparent border-none outline-none py-4 lg:py-5 px-3 lg:px-5 text-[15px] lg:text-[16px] font-medium placeholder:text-[#9ca3af] min-w-0" />
-                  <button onClick={handleSend} className="w-[48px] h-[48px] lg:w-[60px] lg:h-[60px] bg-[#111827] hover:bg-black text-white rounded-[18px] lg:rounded-[24px] flex items-center justify-center shadow-2xl shadow-slate-900/10 transition-all active:scale-95 shrink-0">
-                    <Send size={20} lg:size={24} fill="white" />
-                  </button>
-                </div>
-                <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" accept=".pdf" />
+            <div className="max-w-[900px] mx-auto relative flex items-center group bg-white border-2 border-[#e5e7eb] rounded-[24px] lg:rounded-[32px] pr-3 pl-4 lg:pl-8 py-2">
+               <button onClick={() => fileInputRef.current?.click()} className="p-3 text-[#9ca3af] hover:text-[#2563eb] transition-colors rounded-xl shrink-0"><Paperclip size={24} /></button>
+               <input type="text" value={userInput} onChange={(e) => setUserInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSend()} placeholder="Inquire further..." className="flex-1 bg-transparent border-none outline-none py-4 lg:py-5 px-3 lg:px-5 font-medium placeholder:text-[#9ca3af]" />
+               <button onClick={handleSend} className="w-[48px] h-[48px] lg:w-[60px] lg:h-[60px] bg-[#111827] hover:bg-black text-white rounded-[18px] lg:rounded-[24px] flex items-center justify-center transition-all shrink-0"><Send size={20} fill="white" /></button>
             </div>
+            <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" accept=".pdf" />
           </footer>
         )}
       </main>
