@@ -230,11 +230,8 @@ const App = () => {
           ))}
         </nav>
 
-        <div className="p-6 border-t border-[#f3f4f6]">
-          <button className="flex items-center gap-3 w-full px-4 py-3 text-[#6b7280] hover:text-[#111827] transition-colors rounded-2xl font-bold text-sm bg-gray-50/50">
-            <Settings size={18} />
-            <span>Audit Settings</span>
-          </button>
+        <div className="p-6">
+          {/* Settings button removed for minimalism */}
         </div>
       </aside>
 
