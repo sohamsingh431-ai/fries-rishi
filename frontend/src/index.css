@@ -15,6 +15,13 @@
     @apply bg-[#f9fafb] text-[#374151] font-sans antialiased;
     overflow: hidden;
   }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Custom Scrollbar to match the sleek design */

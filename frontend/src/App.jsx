@@ -194,26 +194,26 @@ const App = () => {
 
 
       <main className={`flex-1 flex flex-col relative min-w-0 transition-colors duration-300 ${isDarkMode ? 'bg-[#020617]' : 'bg-[#f9fafb]'}`}>
-        <header className={`h-[80px] px-6 lg:px-8 flex items-center justify-center z-10 sticky top-0 transition-all duration-300 ${isDarkMode ? 'bg-[#020617]' : 'bg-[#f9fafb]'}`}>
-          <div className={`flex items-center p-1.5 rounded-full border transition-all duration-300 shadow-xl backdrop-blur-xl ${isDarkMode ? 'bg-[#0b1120]/60 border-white/5 shadow-black/40' : 'bg-white/70 border-white/40 shadow-blue-500/5'}`}>
-            <nav className="flex items-center gap-1 h-full">
-              <button onClick={() => setActiveTab('investigation')} className={`text-[10px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-all ${activeTab === 'investigation' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-[#6b7280] hover:text-[#111827] hover:bg-gray-50')}`}>
+        <header className={`h-[100px] px-6 lg:px-8 flex items-center justify-center z-10 sticky top-0 transition-all duration-300 ${isDarkMode ? 'bg-[#020617]' : 'bg-[#f9fafb]'}`}>
+          <div className={`flex items-center p-2 rounded-full border transition-all duration-300 shadow-2xl backdrop-blur-xl ${isDarkMode ? 'bg-[#0b1120]/60 border-white/10 shadow-black/40' : 'bg-white/70 border-white/60 shadow-blue-500/10'}`}>
+            <nav className="flex items-center gap-2 h-full">
+              <button onClick={() => setActiveTab('investigation')} className={`text-[11px] font-black uppercase tracking-[0.15em] px-8 py-3.5 rounded-full transition-all ${activeTab === 'investigation' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800/50' : 'text-[#6b7280] hover:text-[#111827] hover:bg-gray-50')}`}>
                 Job Url
               </button>
-              <button onClick={() => setActiveTab('email')} className={`text-[10px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-all ${activeTab === 'email' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-[#6b7280] hover:bg-gray-50')}`}>
+              <button onClick={() => setActiveTab('email')} className={`text-[11px] font-black uppercase tracking-[0.15em] px-8 py-3.5 rounded-full transition-all ${activeTab === 'email' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800/50' : 'text-[#6b7280] hover:text-[#111827] hover:bg-gray-50')}`}>
                 E-mail Audit
               </button>
-              <button onClick={() => setActiveTab('salary')} className={`text-[10px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-all ${activeTab === 'salary' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-[#6b7280] hover:bg-gray-50')}`}>
+              <button onClick={() => setActiveTab('salary')} className={`text-[11px] font-black uppercase tracking-[0.15em] px-8 py-3.5 rounded-full transition-all ${activeTab === 'salary' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800/50' : 'text-[#6b7280] hover:text-[#111827] hover:bg-gray-50')}`}>
                 Salary
               </button>
-              <button onClick={() => setActiveTab('company')} className={`text-[10px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-all ${activeTab === 'company' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/20' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-[#6b7280] hover:bg-gray-50')}`}>
+              <button onClick={() => setActiveTab('company')} className={`text-[11px] font-black uppercase tracking-[0.15em] px-8 py-3.5 rounded-full transition-all ${activeTab === 'company' ? (isDarkMode ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30' : 'bg-[#2563eb] text-white shadow-lg shadow-blue-500/20') : (isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800/50' : 'text-[#6b7280] hover:text-[#111827] hover:bg-gray-50')}`}>
                 Company Name
               </button>
             </nav>
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto scroll-smooth">
+        <div className="flex-1 overflow-y-auto scroll-smooth no-scrollbar">
           {activeTab === 'investigation' ? (
             <div className="px-4 lg:px-10 py-10 space-y-12">
               <div className="max-w-[900px] mx-auto space-y-12 pb-20">
